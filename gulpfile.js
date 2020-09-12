@@ -15,8 +15,9 @@ const fs = require('fs');
 
 // postcss plugins
 const autoprefixer = require('autoprefixer');
-const colorFunction = require('postcss-color-mod-function');
+const colorFunction = require('postcss-color-function');
 const cssnano = require('cssnano');
+const customProperties = require('postcss-custom-properties');
 const easyimport = require('postcss-easy-import');
 
 const REPO = 'TryGhost/Casper';
@@ -49,6 +50,7 @@ function css(done) {
         src('assets/css/*.css', {sourcemaps: true}),
         postcss([
             easyimport,
+            customProperties({preserve: false}),
             colorFunction(),
             autoprefixer(),
             cssnano()
@@ -79,8 +81,7 @@ function zipper(done) {
         src([
             '**',
             '!node_modules', '!node_modules/**',
-            '!dist', '!dist/**',
-            '!yarn-error.log'
+            '!dist', '!dist/**'
         ]),
         zip(filename),
         dest('dist/')
